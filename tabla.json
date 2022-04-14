@@ -1,0 +1,11 @@
+[{"titulo":"Hello World",
+    "subtitulo":"Primer post de nuestro blog",
+    "text":"Este articulo pretende completar el requisito para cumplir con el abpro 5.1",
+    "link":"helloworld.html"
+    },
+    {"titulo":"Tecnologia de Vanguardia",
+    "subtitulo":"Ultimos adelantos",
+    "text":"Proximos productos en nuestra tienda",
+    "link":"tecnologia.html"
+    }
+    ]
