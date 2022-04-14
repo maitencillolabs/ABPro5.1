@@ -70,14 +70,14 @@ else if (!isNaN(buscarPost))
  }
 
 
-    else{const nombrePost = buscarPost.toLowerCase()
-    const filtrarPost = e.filter(e => {
-      const nuevoNombre = e.titulo
-      const transformarNombre = nuevoNombre.toLowerCase()
-      if(filtrarPost==""){
-        return alert("No se encuentra ningun Post")}
-      return transformarNombre == "" ?  traer() : transformarNombre.includes(nombrePost)
-    })
+ else{const nombrePost = buscarPost.toLowerCase()
+  const filtrarPost = e.filter(e => {
+    const nuevoNombre = e.titulo
+    const transformarNombre = nuevoNombre.toLowerCase()
+    return transformarNombre == "" ?  traer() : transformarNombre.includes(nombrePost)
+  })
+  if(filtrarPost==""){
+    alert("No se encuentra ningun Post")}
  
     filtrarPost.map((e) => {
       verPost.innerHTML += `<div class="card">
