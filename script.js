@@ -34,13 +34,25 @@ function buscar() {
  function buscarPost(e) {
     verPost.innerHTML=""
     const buscarPost = document.getElementById("buscarF").value
-    const nombrePost = buscarPost.toLowerCase()
+    if(buscarPost == "")
+    {
+      alert("Su Busqueda está vacia")
+    }
+else if (!isNaN(buscarPost)) 
+  {
+    alert("no puede ingresar numeros");
+ }
+
+
+    else{const nombrePost = buscarPost.toLowerCase()
     const filtrarPost = e.filter(e => {
       const nuevoNombre = e.titulo
       const transformarNombre = nuevoNombre.toLowerCase()
+      if(filtrarPost==""){
+        return alert("No se encuentra ningun Post")}
       return transformarNombre == "" ?  traer() : transformarNombre.includes(nombrePost)
     })
-  
+ 
     filtrarPost.map((e) => {
       verPost.innerHTML += `<div class="card">
     <div class="card-body">
@@ -51,7 +63,7 @@ function buscar() {
       <button id="agregar" onclick="agregarFav()" type="button" class="btn btn-success">Agregar a Favoritos</button>
     </div>
     </div>`
-    })
+    })}
   }
 //agregar a favoritos
 
