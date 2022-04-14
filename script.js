@@ -17,6 +17,32 @@ function tabla(datos){
       <h6 class="card-subtitle mb-2 text-muted">${e.subtitulo}</h6>
       <p class="card-text">${e.text}.</p>
       <a href="${e.link}" class="card-link">Conoce Más</a>
+
+      <div class="container">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modal">Modal</button>
+        <!-- Modal -->
+        <div class="modal fade" id="Modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Contenido del modal-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="Mas Informacion">&times;</button>
+                        <br>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body">
+                        <h4 class="card-title">${e.subtitulo}</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">${e.titulo}</h6>
+                        <p class="card-text">${e.text}.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
       <button onclick="agregarFav()" type="button" class="btn btn-success">Agregar a Favoritos</button>
     </div>
     </div>`})
