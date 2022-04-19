@@ -1,126 +1,135 @@
-function traer() {
-    fetch("tabla.json")
-        .then(resultadoTabla => resultadoTabla.json()) // FORMATO QUE VAMOS A RECIBIR NUESTRA INFORMACIÓN
-        .then(datos => {
-            tabla(datos)
-            console.log (datos)
-
-        })
-    }
 let verPost=document.getElementById('postBlog');
-function tabla(datos){
-    verPost.innerHTML = ''
-    datos.map (e=>{
-    verPost.innerHTML+= `<div class="card">
-    <div class="card-body">
-      <h4 class="card-title">${e.titulo}</h4>
-      <h6 class="card-subtitle mb-2 text-muted">${e.subtitulo}</h6>
-      <p class="card-text">${e.text}.</p>
-      <a href="${e.link}" class="card-link">Conoce Más</a>
+var url = 'https://newsapi.org/v2/everything?' +
+          'q=Technology&' +
+          'from=2022-04-01&' +
+          'language=es&'+
+          'sortBy=popularity&' +
+          'apiKey=76d16bae822e47929ec0a4353c4f206f';
 
-      <div class="container">
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Modal">Modal</button>
-        <!-- Modal -->
-        <div class="modal fade" id="Modal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Contenido del modal-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="Mas Informacion">&times;</button>
-                        <br>
-                        <h4 class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="card-body">
-                        <h4 class="card-title">${e.subtitulo}</h4>
-                        <h6 class="card-subtitle mb-2 text-muted">${e.titulo}</h6>
-                        <p class="card-text">${e.text}.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-      <button onclick="agregarFav()" type="button" class="btn btn-success">Agregar a Favoritos</button>
-    </div>
-    </div>`})
-}
-function buscar() {
-    fetch("tabla.json")
-        .then(resultadoTabla => resultadoTabla.json()) // FORMATO QUE VAMOS A RECIBIR NUESTRA INFORMACIÓN
-        .then(e => {
-           buscarPost(e)
-            console.log (e)
-
-        })
-    }
-
- function buscarPost(e) {
-    verPost.innerHTML=""
-    const buscarPost = document.getElementById("buscarF").value
-    if(buscarPost == "")
-    {
-      alert("Su Busqueda está vacia")
-    }
-else if (!isNaN(buscarPost)) 
-  {
-    alert("no puede ingresar numeros");
- }
+var req = new Request(url);
+let arregloArticulos = [];
+let favorito = [];
 
 
-    else{const nombrePost = buscarPost.toLowerCase()
-    const filtrarPost = e.filter(e => {
-      const nuevoNombre = e.titulo
-      const transformarNombre = nuevoNombre.toLowerCase()
-      if(filtrarPost==""){
-        return alert("No se encuentra ningun Post")}
-      return transformarNombre == "" ?  traer() : transformarNombre.includes(nombrePost)
-    })
- 
-    filtrarPost.map((e) => {
-      verPost.innerHTML += `<div class="card">
-    <div class="card-body">
-      <h4 class="card-title">${e.titulo}</h4>
-      <h6 class="card-subtitle mb-2 text-muted">${e.subtitulo}</h6>
-      <p class="card-text">${e.text}.</p>
-      <a href="${e.link}" class="card-link">Conoce Más</a>
-      <button id="agregar" onclick="agregarFav()" type="button" class="btn btn-success">Agregar a Favoritos</button>
-    </div>
-    </div>`
-    })}
-  }
-//agregar a favoritos
-
-const addToFavoritosButtons = document.querySelectorAll('.btn-success');
-addToFavoritosButtons.forEach((addToFavoritosButton) => {
-    addToFavoritosButton.addEventListener('click', addToCartClicked);
-});
-
-const comprarButton = document.querySelector('.comprarButton');
-comprarButton.addEventListener('click', comprarButtonClicked);
-const verFav = document.getElementById("favoritos");
+function traer() {
+  fetch(req)
+  .then(response=>response.json())
+  .then((news)=>{
+  arregloArticulos=news.articles
+  console.log(arregloArticulos)
+  recorrerPost(arregloArticulos)
+  }) }
 
 
-function addToFavClicked(event) {
-    const button = event.target;
-    const item = button.closest('.item');
-  
-    const itemTitle = item.querySelector('.item-title').textContent;
-    const itemPrice = item.querySelector('.item-price').textContent;
-    const itemImage = item.querySelector('.item-image').src;
-  
-    addItemToShoppingCart(itemTitle, itemPrice, itemImage);
-  }
-const postTitle=
-  function agregarFav(){
-      verFav.innerHTML += `<div class="card text-white bg-success mb-3" style="max-width: 20rem;">
-      <div class="card-header">${e.titulo}</div>
-      <div class="card-body">
-        <h4 class="card-title">${e.subtitulo}</h4>
-        <p class="card-text">${e.text}</p>
+
+function recorrerPost(arregloArticulos){
+  verPost.innerHTML = ''
+  arregloArticulos.map(e => {
+    
+  verPost.innerHTML+= `
+  <div class="col-md-6">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-success">${e.author}</strong>
+          <h3 class="mb-0">${e.title}</h3>
+          <div class="mb-1 text-muted">${e.publishedAt}</div>
+          <p class="card-text mb-auto">${e.description}</p>
+          <a href=${e.url} class="btn btn-outline-success">Continuar Leyendo</a>
+          <button class="btn btn-outline-warning" onclick = "agregarFavorito('${e.title}')">Agregar a Favoritos</button>
+          </div>
+        <div class="col-auto d-none d-lg-block">
+          <img class="bd-placeholder-img" width="200" height="250" src=${e.urlToImage}>
       </div>
-    </div>`
+    </div>
+</div>`
+})
+}
 
+function buscar() {
+  fetch(req)
+  .then(response=>response.json())
+  .then((news)=>{
+  arregloArticulos=news.articles
+  console.log(arregloArticulos)
+  findNews(arregloArticulos)
+  }) }
+function findNews(arregloArticulos) {
+  verPost.innerHTML=``
+  const buscarPost = document.getElementById("buscarF").value
+if(buscarPost == "")
+  {
+    alert("Su Busqueda está vacia")
   }
+else if (!isNaN(buscarPost)) 
+{
+  alert("no puede ingresar numeros");
+}
+
+
+else{const nombrePost = buscarPost.toLowerCase()
+  let filtroPost=[];
+filtroPost=arregloArticulos.filter(arregloArticulos=> arregloArticulos.title.includes(nombrePost));
+if(filtroPost==""){
+  alert("No se encuentra ningun Post")}
+filtroPost.map((e) => {
+  let title=(e.title)
+    verPost.innerHTML += ` <div class="col-md-6">
+    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div class="col p-4 d-flex flex-column position-static">
+        <strong class="d-inline-block mb-2 text-success">${e.author}</strong>
+        <h3 class="mb-0">${e.title}</h3>
+        <div class="mb-1 text-muted">${e.publishedAt}</div>
+        <p class="card-text mb-auto">${e.description}</p>
+        <a href=${e.url} class="btn btn-outline-success">Continuar Leyendo</a>
+        <button class="btn btn-outline-warning" onclick = "agregarFavorito('${title}')" type="button">Agregar a Favoritos</button>
+        </div>
+      <div class="col-auto d-none d-lg-block">
+        <img class="bd-placeholder-img" width="200" height="250" src=${e.urlToImage}>
+    </div>
+  </div>
+</div`
+  })}
+}
+//agregar a favoritos
+//Funcion toggle favoritos
+
+function toggle(e) {
+  let txt = e.innerText;
+  e.innerText = txt == 'Remover de Favoritos' ? 'Agregar a Favoritos' : 'Remover de Favoritos';
+}
+
+let favoritoContenido=document.getElementById("favoritoContenido")
+
+/* function agregarFav() {
+  fetch(req)
+  .then(response=>response.json())
+  .then((news)=>{
+  arregloArticulos=news.articles
+  console.log(arregloArticulos)
+  agregarFavorito()
+  }) } */
+function agregarFavorito(title) {
+
+let agregar = arregloArticulos.find(elemento => elemento.title === title);
+  favorito.push(agregar)
+  favoritoContenido.innerHTML=``
+  favorito.forEach(e => {
+      favoritoContenido.innerHTML += `<div class="col-md-6">
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <h3 class="mb-0">${e.title}</h3>
+          <a href=${e.url} class="btn btn-outline-success">Continuar Leyendo</a>
+          <a onclick="borrarFavoritos()" class="btn btn-outline-warning">Borrar Favoritos</a>
+          </div>
+    </div>
+  </div>`
+  })
+}
+
+// Funcion para Borrar Favoritos
+
+function borrarFavoritos() {
+  favoritoContenido.innerHTML=``
+  favorito = []
+}
+
